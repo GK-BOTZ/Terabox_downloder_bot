@@ -102,6 +102,7 @@ bot.on('text', async (ctx) => {
   try {
     const { filePath, thumbnailPath, videoTitle } = await downloadVideo(url, replyMessage, userMention, userId);
     await uploadVideo(ctx, filePath, thumbnailPath, videoTitle, replyMessage, process.env.COLLECTION_CHANNEL_ID, userMention, userId);
+    await ctx.deleteMessage(ctx.message.message_id);
     await ctx.deleteMessage(replyMessage.message_id); // Delete the "Processing your request..." message
   } catch (err) {
     await ctx.telegram.editMessageText(replyMessage.chat.id, replyMessage.message_id, null, `Error: ${err.message}`);
