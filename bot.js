@@ -47,7 +47,7 @@ async function uploadVideo(ctx, filePath, thumbnailPath, videoTitle, replyMessag
       collectionChannelId,
       { source: fileStream },
       {
-        caption: `✨ ${videoTitle}\n👤 Leached by: <a href='tg://user?id=${userId}'>${userMention}</a>\n📥 User link: tg://user?id=${userId}\n\nn<b>By :- FLIX OP</b>`,
+        caption: `✨ ${videoTitle}\n👤 Leached by: <a href='tg://user?id=${userId}'>${userMention}</a>\n📥 User link: tg://user?id=${userId}\n\n<b>By :- FLIX OP</b>`,
         thumb: { source: thumbnailPath },
         fileName: path.basename(filePath),
         supports_streaming: true,
