@@ -90,7 +90,6 @@ bot.on('text', async (ctx) => {
   const url = ctx.message.text.trim();
   const urlPattern = /https?:\/\/.*tera/i;
 
-
   if (!urlPattern.test(url)) {
     return ctx.reply('ᴘʟᴇᴀsᴇ sᴇɴᴅ ᴀ ᴠᴀʟɪᴅ ᴛᴇʀᴀʙᴏx ʟɪɴᴋ.');
   }
@@ -111,7 +110,7 @@ bot.on('text', async (ctx) => {
 
 bot.launch().then(() => {
   console.log('Bot is running...');
-});
+}).catch(console.error);
 
 // HTTP server to keep the bot alive
 const server = http.createServer((req, res) => {
