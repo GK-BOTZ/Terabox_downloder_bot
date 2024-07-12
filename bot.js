@@ -12,6 +12,10 @@ async function downloadVideo(url, replyMessage, userMention, userId) {
     const response = await axios.get(`https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${url}`);
     const data = response.data;
 
+    if (!data.response || !data.response[0] || !data.response[0].resolutions) {
+      throw new Error('Invalid response from the video downloader service');
+    }
+
     const resolutions = data.response[0].resolutions;
     const fastDownloadLink = resolutions["Fast Download"];
     const thumbnailUrl = data.response[0].thumbnail;
@@ -35,7 +39,7 @@ async function downloadVideo(url, replyMessage, userMention, userId) {
     });
   } catch (err) {
     console.error('Download failed:', err.message);
-    throw new Error('Download failed');
+    throw new Error('Download failed: ' + err.message);
   }
 }
 
@@ -69,7 +73,7 @@ async function uploadVideo(ctx, filePath, thumbnailPath, videoTitle, replyMessag
     return userMessage.message_id;
   } catch (error) {
     console.error('Upload failed:', error.message);
-    throw new Error('Upload failed');
+    throw new Error('Upload failed: ' + error.message);
   }
 }
 
@@ -77,7 +81,7 @@ bot.start((ctx) => {
   const userId = ctx.from.id;
   const firstName = ctx.from.first_name;
     
-    ctx.reply(`
+  ctx.reply(`
 ᴡᴇʟᴄᴏᴍᴇ, <a href='tg://user?id=${userId}'>${firstName}</a>.\n\n🌟 ɪ ᴀᴍ ᴀ ᴛᴇʀᴀʙᴏx ᴅᴏᴡɴʟᴏᴀᴅᴇʀ ʙᴏᴛ.\nsᴇɴᴅ ᴍᴇ ᴀɴʏ ᴛᴇʀᴀʙᴏx ʟɪɴᴋ ɪ ᴡɪʟʟ ᴅᴏᴡɴʟᴏᴀᴅ ᴡɪᴛʜɪɴ ғᴇᴡ sᴇᴄᴏɴᴅs\nᴀɴᴅ sᴇɴᴅ ɪᴛ ᴛᴏ ʏᴏᴜ ✨.
 `, { parse_mode: 'HTML', reply_markup: {  inline_keyboard: [[       
 { text: "ᴊᴏɪɴ ❤️🚀", url: "https://t.me/FLIXCHECKER" },
@@ -118,7 +122,7 @@ const server = http.createServer((req, res) => {
   res.end('Bot Alive');
 });
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
   console.log(`Bot started on port ${PORT}`);
 });
